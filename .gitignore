@@ -1,0 +1,39 @@
+# ─── Node / Frontend ──────────────────────────────────────────────
+node_modules/
+.npm
+.pnp
+.pnp.js
+.yarn/install-state.gz
+
+# Next.js
+frontend/.next/
+frontend/out/
+frontend/.vercel
+
+# Env files
+.env
+.env*.local
+!.env.example
+
+# ─── Java / Spring Boot ───────────────────────────────────────────
+backend/target/
+backend/.mvn/wrapper/maven-wrapper.jar
+*.class
+*.jar
+!*-sources.jar
+*.war
+*.ear
+*.log
+
+# IDE
+.idea/
+*.iml
+*.ipr
+*.iws
+.vscode/
+*.swp
+*~
+
+# OS
+.DS_Store
+Thumbs.db

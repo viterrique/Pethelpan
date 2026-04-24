@@ -22,61 +22,83 @@ The application connects people who want to adopt or rescue animals with those w
 
 ---
 
-## Repository Status
+## Tech Stack
 
-This repository is in its **initial setup phase**. Only a `LICENSE` file exists. This CLAUDE.md establishes conventions so that the first lines of code land in a consistent, well-structured project.
-
-When you add the first real code, update the sections marked **[TBD]** below.
-
----
-
-## Tech Stack [TBD]
-
-Not yet decided. When chosen, document here:
-
-- **Language / Runtime**: e.g., Node.js 22, Python 3.12
-- **Framework**: e.g., Next.js, FastAPI, Django
-- **Database**: e.g., PostgreSQL, SQLite
-- **ORM / Query layer**: e.g., Prisma, SQLAlchemy
-- **Testing framework**: e.g., Jest, pytest
-- **Package manager**: e.g., npm, pnpm, uv, pip
+| Layer | Choice |
+|---|---|
+| **Frontend** | Next.js 16 (App Router), TypeScript, Tailwind CSS |
+| **Backend** | Spring Boot 3.4, Java 21, Maven |
+| **Frontend runtime** | Node.js 22 / npm |
+| **Backend runtime** | OpenJDK 21 |
+| **Database** | [TBD] |
+| **ORM / Query layer** | [TBD] |
 
 ---
 
-## Project Structure [TBD]
-
-Document the directory layout once scaffolded. Example placeholder:
+## Project Structure
 
 ```
 /
-├── src/          # Application source code
-├── tests/        # Test files
-├── docs/         # Documentation
+├── frontend/                        # Next.js application
+│   ├── app/                         # App Router pages and layouts
+│   ├── public/                      # Static assets
+│   ├── package.json
+│   ├── tsconfig.json
+│   ├── tailwind.config.ts
+│   └── next.config.ts
+│
+├── backend/                         # Spring Boot application
+│   ├── src/
+│   │   ├── main/
+│   │   │   ├── java/com/pethelpan/backend/
+│   │   │   │   └── BackendApplication.java
+│   │   │   └── resources/
+│   │   │       └── application.properties
+│   │   └── test/
+│   │       └── java/com/pethelpan/backend/
+│   │           └── BackendApplicationTests.java
+│   ├── pom.xml
+│   └── mvnw
+│
+├── .gitignore
+├── package.json                     # Root — npm workspaces + convenience scripts
 ├── LICENSE
 └── CLAUDE.md
 ```
 
 ---
 
-## Commands [TBD]
-
-Fill in once the stack is chosen:
+## Commands
 
 ```bash
-# Install dependencies
-<command>
+# Install all frontend dependencies
+npm install
 
-# Start development server
-<command>
+# ── Frontend ──────────────────────────────────────────────────────
+# Start Next.js dev server (http://localhost:3000)
+npm run dev
 
-# Run tests
-<command>
+# Build frontend for production
+npm run build
 
-# Lint / format
-<command>
+# Lint frontend
+npm run lint
 
-# Build for production
-<command>
+# ── Backend ───────────────────────────────────────────────────────
+# Start Spring Boot dev server (http://localhost:8080)
+npm run backend:dev
+# or directly:
+cd backend && ./mvnw spring-boot:run
+
+# Run backend tests
+npm run backend:test
+# or:
+cd backend && ./mvnw test
+
+# Build backend JAR
+npm run backend:build
+# or:
+cd backend && ./mvnw clean package -DskipTests
 ```
 
 ---
@@ -121,9 +143,24 @@ chore: upgrade dependencies
 
 ### Language in Code vs. UI
 
-- **Code** (variables, functions, comments): English
+- **Code** (variables, functions, Java classes, React components): English
 - **User-facing strings, labels, error messages**: Portuguese (pt-BR)
 - **Domain terms** (e.g., "adoção", "resgate"): use Portuguese; add English translation in comments only when non-obvious
+
+### Frontend (Next.js)
+
+- App Router only — no Pages Router
+- Components co-located with the route that owns them; shared components go in `frontend/components/`
+- Tailwind utility classes directly in JSX — no separate CSS files unless unavoidable
+- TypeScript strict mode; no `any` without a comment explaining why
+
+### Backend (Spring Boot)
+
+- Package structure: `com.pethelpan.backend.<feature>` (e.g., `.pet`, `.adoption`, `.rescue`)
+- Each feature package owns its controller, service, and repository
+- DTOs for all request/response bodies — no entity classes exposed directly to the API
+- Bean Validation (`@Valid`) on all controller method parameters
+- `application.properties` for config; secrets via environment variables only
 
 ### General Rules
 
@@ -135,7 +172,8 @@ chore: upgrade dependencies
 
 ### Testing
 
-- Tests live alongside source or in a dedicated `tests/` directory — decide and document once the stack is chosen
+- **Frontend**: Jest + React Testing Library; test files co-located as `*.test.tsx`
+- **Backend**: JUnit 5 + Spring Boot Test; test files mirror source structure under `src/test/`
 - Each public function/endpoint should have at least one test covering the happy path
 - Test names describe behavior: `should return 404 when pet not found`
 
@@ -152,6 +190,7 @@ When working in this repository:
 5. **Commit early and clearly** — use conventional commit messages that explain the *why*
 6. **No force-push to main** — always confirm before destructive git operations
 7. **Portuguese context** — the project serves a Portuguese-speaking audience; respect that in string choices and domain naming
+8. **Monorepo awareness** — frontend changes live under `frontend/`, backend changes under `backend/`; root files (`package.json`, `.gitignore`) affect the whole repo
 
 ---
 

@@ -1,0 +1,13 @@
+{
+  "name": "pethelpan",
+  "version": "0.0.1",
+  "private": true,
+  "scripts": {
+    "dev": "npm --prefix frontend run dev",
+    "build": "npm --prefix frontend run build",
+    "lint": "npm --prefix frontend run lint",
+    "backend:dev": "cd backend && ./mvnw spring-boot:run",
+    "backend:build": "cd backend && ./mvnw clean package -DskipTests",
+    "backend:test": "cd backend && ./mvnw test"
+  }
+}
