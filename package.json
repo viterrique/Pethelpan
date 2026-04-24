@@ -8,6 +8,10 @@
     "lint": "npm --prefix frontend run lint",
     "backend:dev": "cd backend && ./mvnw spring-boot:run",
     "backend:build": "cd backend && ./mvnw clean package -DskipTests",
-    "backend:test": "cd backend && ./mvnw test"
+    "backend:test": "cd backend && ./mvnw test",
+    "dev:all": "concurrently -n frontend,backend -c cyan,yellow \"npm --prefix frontend run dev\" \"cd backend && ./mvnw spring-boot:run\""
+  },
+  "devDependencies": {
+    "concurrently": "^9.2.1"
   }
 }
